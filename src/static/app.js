@@ -31,12 +31,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyDarkMode(enabled) {
     if (enabled) {
       document.body.classList.add("dark-mode");
-      darkModeToggle.textContent = "☀️";
-      darkModeToggle.title = "Switch to light mode";
+      if (darkModeToggle) {
+        darkModeToggle.textContent = "☀️";
+        darkModeToggle.title = "Switch to light mode";
+        darkModeToggle.setAttribute("aria-label", "Switch to light mode");
+      }
     } else {
       document.body.classList.remove("dark-mode");
-      darkModeToggle.textContent = "🌙";
-      darkModeToggle.title = "Switch to dark mode";
+      if (darkModeToggle) {
+        darkModeToggle.textContent = "🌙";
+        darkModeToggle.title = "Switch to dark mode";
+        darkModeToggle.setAttribute("aria-label", "Switch to dark mode");
+      }
     }
   }
 
@@ -44,11 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedDarkMode = localStorage.getItem("darkMode") === "true";
   applyDarkMode(savedDarkMode);
 
-  darkModeToggle.addEventListener("click", () => {
-    const isDark = document.body.classList.contains("dark-mode");
-    localStorage.setItem("darkMode", !isDark);
-    applyDarkMode(!isDark);
-  });
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener("click", () => {
+      const isDark = document.body.classList.contains("dark-mode");
+      localStorage.setItem("darkMode", !isDark);
+      applyDarkMode(!isDark);
+    });
+  }
 
   // Activity categories with corresponding colors
   const activityTypes = {
